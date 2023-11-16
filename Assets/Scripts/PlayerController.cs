@@ -15,11 +15,17 @@ public class PlayerController : MonoBehaviour
     private float yOffSet;
 
     public float speed;
+    private float initialSpeed;
+    public float minSpeed;
+    public float maxSpeed;
+
     public float jumpHeight;
     public float gravity;
 
     public float originalHeight;
     public float crouchHeight;
+
+    public float gettingTiredFactor;
 
     public LayerMask mask;
 
@@ -27,10 +33,12 @@ public class PlayerController : MonoBehaviour
     {
         controller = GetComponent<CharacterController>();
         yOffSet = cam.transform.position.y - controller.center.y;
+        initialSpeed = speed;
     }
 
     private void Update()
     {
+        print(speed);
         #region Movement
 
         float horizontal = Input.GetAxis("Horizontal");
@@ -62,12 +70,27 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
-            speed *= 2;
+            if(speed == initialSpeed)
+            {
+                speed = 2 * initialSpeed;
+            }
         }
 
-        if (Input.GetKeyUp(KeyCode.LeftShift))
+        if (Input.GetKey(KeyCode.LeftShift))
         {
-            speed *= 0.5f;
+            speed -= Time.deltaTime * gettingTiredFactor;
+            speed = Mathf.Clamp(speed,minSpeed,maxSpeed);
+        }
+
+        //if (Input.GetKeyUp(KeyCode.LeftShift))
+        //{
+        //    speed = initialSpeed;
+        //}
+
+        if (!Input.GetKey(KeyCode.LeftShift))
+        {
+                speed += gettingTiredFactor * Time.deltaTime;
+                speed = Mathf.Clamp(speed, minSpeed,initialSpeed);
         }
 
         #endregion
