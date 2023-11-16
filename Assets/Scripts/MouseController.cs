@@ -29,7 +29,7 @@ public class MouseController : MonoBehaviour
 
         currentRot += rotx;
         currentRot = Mathf.Lerp(currentRot, 0, smoothing * Time.deltaTime);
-        print(currentRot);
+        //print(currentRot);
 
         transform.localRotation = Quaternion.Euler(xRot, 0f, currentRot);
 
