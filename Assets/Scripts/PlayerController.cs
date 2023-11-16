@@ -38,7 +38,7 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        print(speed);
+        //print(speed);
         #region Movement
 
         float horizontal = Input.GetAxis("Horizontal");

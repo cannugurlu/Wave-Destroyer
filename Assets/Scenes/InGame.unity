@@ -1222,12 +1222,12 @@ MonoBehaviour:
   distance: 0.3
   speed: 8
   minSpeed: 3
-  maxSpeed: 8
+  maxSpeed: 16
   jumpHeight: 2
   gravity: -19
   originalHeight: 1.8
   crouchHeight: 1
-  gettingTiredFactor: 0
+  gettingTiredFactor: 1
   mask:
     serializedVersion: 2
     m_Bits: 8
@@ -1243,9 +1243,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ddb86c7439d2cf4b856027118bbed27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rightSwordPos: {x: 0.221, y: -0.184, z: 0.323}
+  rightSwordPos: {x: 0.221, y: -0.184, z: 1}
   leftSwordPos: {x: -4.23, y: -0.57, z: 1.74}
-  rightSwordRot: {x: -30, y: 30, z: 0}
+  rightSwordRot: {x: -30, y: 30, z: 1}
   leftSwordRot: {x: 0, y: -60, z: 30}
   gun: {fileID: 210251149}
   sword: {fileID: 698157196}

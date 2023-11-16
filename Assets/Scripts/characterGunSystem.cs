@@ -16,12 +16,14 @@ public class characterGunSystem : MonoBehaviour
     bool isSword = false;
     bool isRight = false;
     bool gunChangeController = true;
+    bool isGunChanging = false;
 
     public TextMeshProUGUI textMeshProUGUI;
 
     private void Start()
     {
         handPos = GameObject.Find("HandPosition");
+        textMeshProUGUI.text = bulletNumber.ToString();
     }
     private void Update()
     {
@@ -29,11 +31,16 @@ public class characterGunSystem : MonoBehaviour
         {
             if((!isShooting && bulletNumber>0) || (isSword && !isSwordMoving))
             {
-                StartCoroutine(Shoot());
+                if (!isGunChanging)
+                {
+                    StartCoroutine(Shoot());
+                }
             }
             if (bulletNumber == 0 && gunChangeController)
             {
                 gunChange();
+                print("gun change");
+
             }
         }
     }
@@ -92,12 +99,13 @@ public class characterGunSystem : MonoBehaviour
 
     void gunChange()
     {
+            isGunChanging = true;
+            gunChangeController = false;
             gun.transform.DOLocalRotate(new Vector3(20, 0, 0), 1.2f);
             gun.transform.DOLocalMove(new Vector3(0, -3, -0.5f), 1.2f).OnComplete(() =>
             {
                 sword.transform.DOLocalMove(handPos.transform.localPosition, 0.4f);
-                sword.transform.DOLocalRotate(new Vector3(-30, 30, 0), 0.4f);
-                gunChangeController = false;
+                sword.transform.DOLocalRotate(new Vector3(-30, 30, 0), 0.4f).OnComplete(()=>isGunChanging= false);
             });
     }
 
