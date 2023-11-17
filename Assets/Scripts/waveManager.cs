@@ -15,12 +15,10 @@ public class waveManager : MonoBehaviour
         public int size;
     }
 
-    public float characterZoneR;
 
     public GameObject[] spawnPoints;
     public Vector2[] wavesFeature;
     public int currentWave;
-    public int[] indexofSpawners;
     bool shouldTeleport;
 
     public List<Pool> pools;    
