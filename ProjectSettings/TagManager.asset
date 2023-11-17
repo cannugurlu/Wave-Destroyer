@@ -6,6 +6,7 @@ TagManager:
   tags:
   - range
   - close
+  - spawner
   layers:
   - Default
   - TransparentFX

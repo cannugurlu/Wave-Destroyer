@@ -15,11 +15,13 @@ public class waveManager : MonoBehaviour
         public int size;
     }
 
+    public float characterZoneR;
 
     public GameObject[] spawnPoints;
     public Vector2[] wavesFeature;
     public int currentWave;
     public int[] indexofSpawners;
+    bool shouldTeleport;
 
     public List<Pool> pools;    
     public Dictionary<string,Queue<GameObject>> poolDictionary = new Dictionary<string,Queue<GameObject>>();
@@ -39,6 +41,8 @@ public class waveManager : MonoBehaviour
 
             poolDictionary.Add(pool.tag, objectPool);
         }
+
+        WaveStarted();
     }
 
     void WaveStarted()
@@ -50,33 +54,58 @@ public class waveManager : MonoBehaviour
 
             for(int i=0; i<closeNumber; i++)
             {
-                
-                //close number kadar farklý spawner sec ve spawn et
-                while (true)
+                shouldTeleport = false;
+
+                GameObject selectedObj,objtoSpawn;
+                int selectedNum = Random.Range(0, spawnPoints.Length);
+                selectedObj = spawnPoints[selectedNum];
+
+                if (!spawnPoints[selectedNum].activeInHierarchy)
                 {
-                    int selectedNum = Random.Range(0, spawnPoints.Length);
-                    GameObject selectedObj = spawnPoints[selectedNum];
-                    if(selectedObj.activeSelf == true)
-                    {
-                        break;
-                    }
+                    i--;
+                }
+                else
+                {
+                    spawnPoints[selectedNum].SetActive(false);
+                    shouldTeleport = true;
                 }
 
-                GameObject objtoSpawn = poolDictionary["close"].Dequeue();
-
-                objtoSpawn.SetActive(true);
-                objtoSpawn.transform.position = selectedObj.transform.position;
-                selectedObj.SetActive(false);
+                if (shouldTeleport)
+                {
+                    objtoSpawn = poolDictionary["close"].Dequeue();
+                    objtoSpawn.SetActive(true);
+                    objtoSpawn.transform.position = selectedObj.transform.position;
+                    selectedObj.SetActive(false);
+                }
             }
             for (int i = 0; i < rangeNumber; i++)
             {
-                int selectedNum = Random.Range(0, spawnPoints.Length);
-                GameObject selectedObj = spawnPoints[selectedNum];
-                GameObject objtoSpawn = poolDictionary["close"].Dequeue();
+                shouldTeleport = false;
 
-                objtoSpawn.SetActive(true);
-                objtoSpawn.transform.position = selectedObj.transform.position;
-                selectedObj.SetActive(false);
+                GameObject selectedObj, objtoSpawn;
+                int selectedNum = Random.Range(0, spawnPoints.Length);
+                selectedObj = spawnPoints[selectedNum];
+
+                float differenceX = (selectedObj.transform.position.x - GameObject.Find("Player").transform.position.x);
+                float differenceY = (selectedObj.transform.position.y - GameObject.Find("Player").transform.position.y);
+
+                if (!spawnPoints[selectedNum].activeInHierarchy)
+                {
+                    i--;
+                }
+                else
+                {
+                    spawnPoints[selectedNum].SetActive(false);
+                    shouldTeleport = true;
+                }
+
+                if (shouldTeleport)
+                {
+                    objtoSpawn = poolDictionary["range"].Dequeue();
+                    objtoSpawn.SetActive(true);
+                    objtoSpawn.transform.position = selectedObj.transform.position;
+                    selectedObj.SetActive(false);
+                }
             }
         }
     }
