@@ -4243,7 +4243,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sens: 120
   body: {fileID: 1332874648}
-  smoothing: 50
+  smoothing: 75
   whileZoomingPos: {x: 0, y: -0.1, z: 0.323}
   whileZoomingRot: {x: 0, y: 0, z: 0}
   initialPos: {x: 0, y: 0, z: 0}
@@ -4466,18 +4466,23 @@ MonoBehaviour:
   cam: {fileID: 1237335199}
   ground: {fileID: 1702929005}
   distance: 0.3
-  speed: 8
-  minSpeed: 3
-  maxSpeed: 16
   jumpHeight: 2
   gravity: -19
   originalHeight: 1.8
   crouchHeight: 1
-  gettingTiredFactor: 1
   mask:
     serializedVersion: 2
     m_Bits: 8
   slider: {fileID: 787104782}
+  maxStamina: 100
+  criticalStamina: 25
+  midStamina: 60
+  speed: 8
+  minSpeed: 3
+  midStaminaSpeed: 12
+  maxSpeed: 16
+  velocityFactor: 0.5
+  staminaFactor: 10
 --- !u!114 &1332874650
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6735,8 +6740,25 @@ MonoBehaviour:
   - {fileID: 1012395329}
   wavesFeature:
   - {x: 2, y: 2}
-  - {x: 2, y: 3}
-  - {x: 4, y: 4}
+  - {x: 2, y: 2}
+  - {x: 2, y: 2}
+  - {x: 2, y: 2}
+  - {x: 2, y: 2}
+  - {x: 2, y: 2}
+  - {x: 2, y: 2}
+  - {x: 2, y: 2}
+  - {x: 2, y: 2}
+  - {x: 2, y: 2}
+  - {x: 2, y: 2}
+  - {x: 2, y: 2}
+  - {x: 2, y: 2}
+  - {x: 2, y: 2}
+  - {x: 2, y: 2}
+  - {x: 2, y: 2}
+  - {x: 2, y: 2}
+  - {x: 2, y: 2}
+  - {x: 2, y: 2}
+  - {x: 2, y: 2}
   currentWave: 0
   pools:
   - tag: range

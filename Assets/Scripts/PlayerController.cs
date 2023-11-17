@@ -15,12 +15,13 @@ public class PlayerController : MonoBehaviour
     public float distance = 0.3f;
     private float yOffSet;
 
-    private bool isTired;
-    private float stamina;
-    public float speed;
+    private bool isUpperStamina;
+    private bool isMidStamina;
+    private bool isLowerStamina;
+
+    private float currentStamina;
     private float initialSpeed;
-    public float minSpeed;
-    public float maxSpeed;
+    private bool isTiredinStart;
 
     public float jumpHeight;
     public float gravity;
@@ -28,24 +29,32 @@ public class PlayerController : MonoBehaviour
     public float originalHeight;
     public float crouchHeight;
 
-    public float gettingTiredFactor;
-
     public LayerMask mask;
 
     public Slider slider;
 
+    [Header("Stamina-Speed Values")]
+    public float maxStamina;
+    public float criticalStamina;
+    public float midStamina;
+    public float speed;
+    public float minSpeed;
+    public float midStaminaSpeed;
+    public float maxSpeed;
+    public float velocityFactor;
+    public float staminaFactor;
     private void Start()
     {
         controller = GetComponent<CharacterController>();
         yOffSet = cam.transform.position.y - controller.center.y;
         initialSpeed = speed;
-        stamina = 2*initialSpeed;
+        currentStamina = maxStamina;
     }
 
     private void Update()
     {
         updateBar();
-        //Debug.LogError(speed + " " + stamina);
+        Debug.LogError(speed + "            " + currentStamina);
 
         #region Movement
 
@@ -76,61 +85,140 @@ public class PlayerController : MonoBehaviour
 
         #region Run
 
-        if (Input.GetKeyDown(KeyCode.LeftShift)&&!isTired)
+        if (Input.GetKeyDown(KeyCode.LeftShift)) 
         {
-            //if(speed == initialSpeed)
-            //{
-            //    speed = 2 * initialSpeed;
-            //}
-                stamina = 2 * initialSpeed;
-                speed = 2 * initialSpeed;
+
+            if (currentStamina >= midStamina && currentStamina <= maxStamina) // ilk basista stamina mid staminanin uzerindeyse
+            {
+                speed = maxSpeed;
+                isTiredinStart = false;
+            }
+            else if (currentStamina < midStamina && currentStamina > criticalStamina) // ilk basista stamina mid staminanin altindaysa
+            {
+                speed = midStaminaSpeed;
+                isTiredinStart = false;
+            }
+
+            else if (currentStamina >= 0 && currentStamina <= criticalStamina) // ilk basista stamina critical staminanin altindaysa
+            {
+                isTiredinStart = true;
+            }
         }
 
-        if (Input.GetKey(KeyCode.LeftShift))
+
+        if (Input.GetKey(KeyCode.LeftShift) && !isTiredinStart)
         {
-            //speed -= Time.deltaTime * gettingTiredFactor;
-            //speed = Mathf.Clamp(speed,minSpeed,maxSpeed);
-            if (stamina > 12 && !isTired)
+            if (currentStamina >= midStamina && currentStamina <= maxStamina) // basili tutarken yuksek staminaysa
             {
-                    stamina -= gettingTiredFactor * Time.deltaTime;
-                    stamina = Mathf.Clamp(stamina, 0, 2 * initialSpeed);
-                    speed -= Time.deltaTime * gettingTiredFactor / 1.2f;
-                    speed = Mathf.Clamp(speed, minSpeed, maxSpeed);
-                
-                //hýzý azalt
+                speed -= velocityFactor * Time.deltaTime;
+                speed = Mathf.Clamp(speed, midStaminaSpeed, maxSpeed);
+
+                currentStamina -= staminaFactor * Time.deltaTime;
+                currentStamina = Mathf.Clamp(currentStamina,0, maxStamina);
+
+                isUpperStamina = true;
+                isMidStamina = false;
+                isLowerStamina= false;
             }
-            else if (stamina > 3 && stamina <= 12)
+            else if(currentStamina < midStamina && currentStamina > criticalStamina) // basili tutarken mid staminaysa
             {
-                stamina -= gettingTiredFactor * Time.deltaTime;
-                stamina = Mathf.Clamp(stamina, 0, 2 * initialSpeed);
-                isTired = true;
-                // hýz sabit
+                speed = midStaminaSpeed;
+
+                currentStamina -= staminaFactor * Time.deltaTime;
+                currentStamina = Mathf.Clamp(currentStamina, 0, maxStamina);
+
+                isUpperStamina = false;
+                isMidStamina = true;
+                isLowerStamina = false;
             }
-            else if (stamina > 0 && stamina <= 3)
+
+            else if((currentStamina>=0 && currentStamina <= criticalStamina)) // basili tutarken critic staminaysa
             {
-                stamina -= gettingTiredFactor * Time.deltaTime;
-                stamina = Mathf.Clamp(stamina, 0, 2 * initialSpeed);
-                speed -= Time.deltaTime * gettingTiredFactor*4f;
-                speed = Mathf.Clamp(speed, minSpeed, maxSpeed);
-                isTired = true;
-                //hýzý hýzlý azalt
+                speed -= 10*velocityFactor * Time.deltaTime;
+                speed = Mathf.Clamp(speed, minSpeed, midStaminaSpeed);
+
+                currentStamina -= staminaFactor * Time.deltaTime;
+                currentStamina = Mathf.Clamp(currentStamina, 0, maxStamina);
+
+                isUpperStamina = false;
+                isMidStamina = false;
+                isLowerStamina = true;
+            }
+
+            //if (stamina > 12 && !isTired)
+            //{
+            //        stamina -= gettingTiredFactor * Time.deltaTime;
+            //        stamina = Mathf.Clamp(stamina, 0, 2 * initialSpeed);
+            //        speed -= Time.deltaTime * gettingTiredFactor / 1.2f;
+            //        speed = Mathf.Clamp(speed, minSpeed, maxSpeed);
+
+            //    //hýzý azalt
+            //}
+            //else if (stamina > 3 && stamina <= 12)
+            //{
+            //    stamina -= gettingTiredFactor * Time.deltaTime;
+            //    stamina = Mathf.Clamp(stamina, 0, 2 * initialSpeed);
+            //    isTired = false;
+            //    // hýz sabit
+            //}
+            //else if (stamina > 0 && stamina <= 3)
+            //{
+            //    stamina -= gettingTiredFactor * Time.deltaTime;
+            //    stamina = Mathf.Clamp(stamina, 0, 2 * initialSpeed);
+            //    speed -= Time.deltaTime * gettingTiredFactor*4f;
+            //    speed = Mathf.Clamp(speed, minSpeed, maxSpeed);
+            //    isTired = true;
+            //    //hýzý hýzlý azalt
+            //}
+        }
+        if(Input.GetKey(KeyCode.LeftShift)&&isTiredinStart)
+        {
+            currentStamina += 2 * staminaFactor * Time.deltaTime;
+            currentStamina = Mathf.Clamp(currentStamina, 0, maxStamina);
+            if(currentStamina>criticalStamina) //critical stamina veya mid stamina olarak ayarlanacak
+            {
+                isTiredinStart = false;
             }
         }
 
         if (!Input.GetKey(KeyCode.LeftShift))
         {
-            //speed += gettingTiredFactor * Time.deltaTime;
-            //speed = Mathf.Clamp(speed, minSpeed,initialSpeed);
-            if(stamina<=2*initialSpeed)
+            if(currentStamina<maxStamina)
             {
-                stamina += gettingTiredFactor * Time.deltaTime;
-                speed += Time.deltaTime * gettingTiredFactor;
-                speed = Mathf.Clamp(speed, minSpeed, initialSpeed);
+                currentStamina += 2 * staminaFactor * Time.deltaTime;
+                currentStamina = Mathf.Clamp(currentStamina,0, maxStamina);
+                if(currentStamina>criticalStamina)
+                {
+                    isUpperStamina=true;
+                    isMidStamina = false;
+                    isLowerStamina=false;
+                }
+                if (isUpperStamina)
+                {
+                    speed = initialSpeed;
+                }
+                else if (isMidStamina)
+                {
+                    speed = initialSpeed;
+                }
+                else if (isLowerStamina)
+                {
+                    speed += Time.deltaTime * velocityFactor;
+                    speed = Mathf.Clamp(speed, minSpeed, initialSpeed);
+                }
             }
-            if(stamina >= 12)
-            {
-                isTired = false;
-            }
+
+
+            //if(stamina<=2*initialSpeed)
+            //{
+            //    stamina += gettingTiredFactor * Time.deltaTime;
+            //    speed += Time.deltaTime * gettingTiredFactor;
+            //    speed = Mathf.Clamp(speed, minSpeed, initialSpeed);
+            //}
+            //if(stamina >= 12)
+            //{
+            //    isTired = false;
+            //}
         }
 
         #endregion
@@ -162,7 +250,7 @@ public class PlayerController : MonoBehaviour
 
     void updateBar()
     {
-        float fillAmount = Mathf.InverseLerp(0, 2*initialSpeed, stamina);
+        float fillAmount = Mathf.InverseLerp(0, maxStamina, currentStamina);
 
         if (slider != null)
         {

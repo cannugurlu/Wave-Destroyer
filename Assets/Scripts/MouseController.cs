@@ -63,11 +63,11 @@ public class MouseController : MonoBehaviour
     void ZoomIn()
     {
         gameObject.transform.Find("HandPosition").transform.DOLocalMoveX(whileZoomingPos.x, 0.2f);
-        gameObject.transform.Find("HandPosition").transform.DOLocalMoveY(initialPos.y+0.1f, 0.2f);
+        gameObject.transform.Find("HandPosition").transform.DOLocalMoveY(initialPos.y+0.05f, 0.2f);
 
         gameObject.transform.Find("HandPosition").transform.DOLocalRotate(whileZoomingRot, 0.2f);
 
-        gameObject.GetComponent<Camera>().fieldOfView = 30;
+        gameObject.GetComponent<Camera>().fieldOfView = 40;
         gameObject.GetComponent<Camera>().fieldOfView = Mathf.Clamp(gameObject.GetComponent<Camera>().fieldOfView, 30, 60);
 
         gameObject.transform.localPosition = new Vector3(transform.localPosition.x,transform.localPosition.y+0.05f, transform.localPosition.z);
