@@ -23,7 +23,7 @@ public class spawnBlocker : MonoBehaviour
 
     IEnumerator spawnerController(GameObject obj)
     {
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(0.01f);
         obj.SetActive(true);
     }
 

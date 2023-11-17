@@ -45,7 +45,7 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         updateBar();
-        Debug.LogError(speed + " " + stamina);
+        //Debug.LogError(speed + " " + stamina);
 
         #region Movement
 
