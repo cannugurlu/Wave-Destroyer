@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using UnityEngine.UI;
+using TMPro;
+using static UnityEditor.Timeline.TimelinePlaybackControls;
 
 public class PlayerController : MonoBehaviour
 {
@@ -10,6 +12,11 @@ public class PlayerController : MonoBehaviour
     public GameObject cam;
     Vector3 velocity;
     bool isGrounded;
+
+    bool isGameStopped = false;
+    public Canvas CardCanvas;
+    public GameObject CardPanel;
+    public TextMeshProUGUI CountText;
 
     public Transform ground;
     public float distance = 0.3f;
@@ -55,6 +62,30 @@ public class PlayerController : MonoBehaviour
     {
         updateBar();
         //Debug.LogError(speed + "            " + currentStamina);
+
+        #region QCard
+
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            if (!isGameStopped) // Oyunu durdur
+            {
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
+                velocity = Vector3.zero;
+                Time.timeScale = 0;
+                isGameStopped = true;
+                CardPanel.SetActive(true);
+                CardCanvas.gameObject.SetActive(true);
+            }
+            else
+            {
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;
+                CardPanel.SetActive(false);
+                StartCoroutine(CountdownCoroutine(3));
+            }
+        }
+        #endregion
 
         #region Movement
 
@@ -256,5 +287,19 @@ public class PlayerController : MonoBehaviour
         {
             slider.value = fillAmount;
         }
+    }
+
+    IEnumerator CountdownCoroutine(int seconds)
+    {
+        int count = seconds;
+        while (count > 0)
+        {
+            CountText.text = count.ToString();
+            yield return new WaitForSecondsRealtime(1f);
+            count--;
+        }
+        Time.timeScale = 1;
+        isGameStopped = false;
+        CardCanvas.gameObject.SetActive(false);
     }
 }
