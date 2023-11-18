@@ -10,7 +10,7 @@ public class spawnBlocker : MonoBehaviour
         {
             other.gameObject.SetActive(false);
             StartCoroutine(spawnerController(other.gameObject));
-            print("x");
+            //print("x");
         }
     }
     private void OnTriggerExit(Collider other)

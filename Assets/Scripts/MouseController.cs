@@ -32,6 +32,7 @@ public class MouseController : MonoBehaviour
     }
     private void Update()
     {
+
         float rotx = Input.GetAxisRaw("Mouse X") * sens * Time.deltaTime;
         float roty = Input.GetAxisRaw("Mouse Y") * sens * Time.deltaTime;
 
@@ -48,7 +49,7 @@ public class MouseController : MonoBehaviour
 
         #region Zoom
 
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonDown(1)&&!gameObject.transform.parent.GetComponent<characterGunSystem>().isSword)
         {
             ZoomIn();
         }
@@ -65,7 +66,7 @@ public class MouseController : MonoBehaviour
         gameObject.transform.Find("HandPosition").transform.DOLocalMoveX(whileZoomingPos.x, 0.2f);
         gameObject.transform.Find("HandPosition").transform.DOLocalMoveY(initialPos.y+0.05f, 0.2f);
 
-        gameObject.transform.Find("HandPosition").transform.DOLocalRotate(whileZoomingRot, 0.2f);
+       // gameObject.transform.Find("HandPosition").transform.DOLocalRotate(whileZoomingRot, 0.2f);
 
         gameObject.GetComponent<Camera>().fieldOfView = 40;
         gameObject.GetComponent<Camera>().fieldOfView = Mathf.Clamp(gameObject.GetComponent<Camera>().fieldOfView, 30, 60);

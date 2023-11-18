@@ -369,6 +369,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6223595494608275499, guid: 8ad68f1825d95064ca5dedc43649a0c2, type: 3}
+      propertyPath: m_Name
+      value: bulletSpawner
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4504,7 +4508,8 @@ MonoBehaviour:
   bullet: {fileID: 6107251039964594753, guid: ba54cfa10b6ef2940ae6a87206e5f157, type: 3}
   handPos: {fileID: 0}
   bulletNumber: 10
-  bulletSpeed: 10
+  bulletSpeed: 0.1
+  isSword: 0
   textMeshProUGUI: {fileID: 525144913}
 --- !u!1 &1337025276
 GameObject:
