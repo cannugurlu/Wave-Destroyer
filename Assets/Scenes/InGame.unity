@@ -4468,6 +4468,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cam: {fileID: 1237335199}
+  CardCanvas: {fileID: 0}
+  CardPanel: {fileID: 0}
+  CountText: {fileID: 0}
   ground: {fileID: 1702929005}
   distance: 0.3
   jumpHeight: 2
@@ -4507,8 +4510,8 @@ MonoBehaviour:
   sword: {fileID: 698157196}
   bullet: {fileID: 6107251039964594753, guid: ba54cfa10b6ef2940ae6a87206e5f157, type: 3}
   handPos: {fileID: 0}
-  bulletNumber: 10
-  bulletSpeed: 0.1
+  bulletNumber: 100
+  bulletSpeed: 10
   isSword: 0
   textMeshProUGUI: {fileID: 525144913}
 --- !u!1 &1337025276
@@ -6772,6 +6775,7 @@ MonoBehaviour:
   - tag: close
     prefab: {fileID: 562561319302370886, guid: 8c3ed6b718fa1b145953b65af85c8df2, type: 3}
     size: 10
+  currentEnemies: []
 --- !u!1 &1900182253
 GameObject:
   m_ObjectHideFlags: 0

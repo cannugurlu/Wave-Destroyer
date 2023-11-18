@@ -46,15 +46,18 @@ public class CardStats : MonoBehaviour
 
         if (cardPrices[0].level == 0)
         {
-            bulletScript.bulletsDamage += 10;
+            GameObject.FindGameObjectWithTag("bullet").GetComponent<bulletScript>().bulletsDamage += 10;
+            //bulletScript.bulletsDamage += 10;
         }
         else if (cardPrices[0].level == 1)
         {
-            bulletScript.bulletsDamage += 15;
+            GameObject.FindGameObjectWithTag("bullet").GetComponent<bulletScript>().bulletsDamage += 15;
+            //bulletScript.bulletsDamage += 15;
         }
         else if (cardPrices[0].level == 2)
         {
-            bulletScript.bulletsDamage += 20;
+            GameObject.FindGameObjectWithTag("bullet").GetComponent<bulletScript>().bulletsDamage += 20;
+            //bulletScript.bulletsDamage += 20;
         }
     }
 

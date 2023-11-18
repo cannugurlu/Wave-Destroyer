@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class bulletScript : MonoBehaviour
 {
-    public static int bulletsDamage;
+    public int bulletsDamage=0;
 }

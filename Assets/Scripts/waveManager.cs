@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditorInternal;
 using UnityEngine;
 
@@ -24,6 +25,8 @@ public class waveManager : MonoBehaviour
     public List<Pool> pools;    
     public Dictionary<string,Queue<GameObject>> poolDictionary = new Dictionary<string,Queue<GameObject>>();
 
+    [SerializeField] List<GameObject> currentEnemies = new List<GameObject>();
+
     private void Awake()
     {
         foreach(Pool pool in pools)
@@ -45,8 +48,12 @@ public class waveManager : MonoBehaviour
     private void Start()
     {
         Invoke(nameof(WaveStarted),0.5f);
+        InvokeRepeating(nameof(checkAllDeath), 2.0f, 3.0f);
     }
 
+    private void FixedUpdate()
+    { 
+    }
     void WaveStarted()
     {
         if(currentWave < wavesFeature.Length)
@@ -80,6 +87,7 @@ public class waveManager : MonoBehaviour
             if (shouldTeleport)
             {
                 objtoSpawn = poolDictionary["close"].Dequeue();
+                currentEnemies.Add(objtoSpawn);
                 objtoSpawn.SetActive(true);
                 objtoSpawn.transform.position = selectedObj.transform.position;
                 selectedObj.SetActive(false);
@@ -109,10 +117,50 @@ public class waveManager : MonoBehaviour
             if (shouldTeleport)
             {
                 objtoSpawn = poolDictionary["range"].Dequeue();
+                currentEnemies.Add(objtoSpawn);
                 objtoSpawn.SetActive(true);
                 objtoSpawn.transform.position = selectedObj.transform.position;
                 selectedObj.SetActive(false);
             }
         }
     }
+
+    void pushBackObjects()
+    {
+        foreach(GameObject obj in currentEnemies)
+        {
+            obj.GetComponent<enemyScript>().health = 100;
+            obj.GetComponent<enemyScript>().isDead = false;
+            obj.GetComponent<enemyScript>().shouldFollow = true;
+            obj.SetActive(false);
+        }
+        currentEnemies.Clear();
+    }
+
+
+    bool TumDusmanlarOlduMu()
+    {
+        foreach (GameObject dusman in currentEnemies)
+        {
+            if (dusman.activeSelf)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+
+    void checkAllDeath()
+    {
+        if (TumDusmanlarOlduMu())
+        {
+            pushBackObjects();
+            pushBackObjects();
+            currentWave++;
+            Invoke("WaveStarted", 3);
+        }
+    }
+
 }
